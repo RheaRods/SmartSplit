@@ -8,6 +8,7 @@ import authRouter from './auth.js';
 import groupsRouter, { invitesRouter } from './groups.js';
 import { ledgerRouter } from './ledger.js';
 import expensesRouter from './expenses.js';
+import { quickAddRouter } from './quickAdd.js';
 import settlementsRouter, { smartRouter } from './settlements.js';
 import { reportsRouter } from './reports.js';
 
@@ -56,13 +57,13 @@ app.get('/health', (_req, res) => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/groups/:groupId/ledger', ledgerRouter);
+app.use('/api/groups/:groupId/expenses/parse', quickAddRouter); // S1: sentence -> preview
 app.use('/api/groups/:groupId/expenses', expensesRouter);
 app.use('/api/groups/:groupId/settlements', settlementsRouter);
 app.use('/api/groups/:groupId/reports', reportsRouter);
 app.use('/api/groups/:groupId', smartRouter); // /settle-plan and /next-payer
 app.use('/api/groups', groupsRouter);
 app.use('/api/invites', invitesRouter);
-// (the quick-add sentence parser, S1, gets mounted here in the next step)
 
 // ---- 404 + error handling ----
 app.use((_req, res) => res.status(404).json({ error: 'Not found' }));
